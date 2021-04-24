@@ -1,0 +1,123 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://InteractiveUI-Shader.shader" type="Shader" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Node2D
+
+
+
+func _on_Area2D_input_event(viewport, event, shape_idx):
+	if Input.is_action_just_pressed(\"click\"):
+		$AnimationPlayer.play(\"down\")
+	elif Input.is_action_just_released(\"click\"):
+		$AnimationPlayer.play(\"up\")
+
+
+func _on_Area2D_mouse_entered():
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+
+
+func _on_Area2D_mouse_exited():
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+"
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/color = Color( 0.372549, 0.372549, 0.372549, 0 )
+shader_param/width = 0.0
+shader_param/margin = 12.0
+shader_param/pattern = 0
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 120.043
+
+[sub_resource type="Animation" id=2]
+resource_name = "down"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( -2, -2 ),
+"update": 0,
+"values": [ Color( 0.372549, 0.372549, 0.372549, 0 ), Color( 0.568627, 0.568627, 0.568627, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:material:shader_param/width")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( -2 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "up"
+length = 0.4
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/width")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 0, 0 ),
+"update": 1,
+"values": [ 12.0, 0.0 ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Sprite:material:shader_param/color:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0, -0.783347, 0, 0, 0.1661, 0, 0.00601679 ),
+"times": PoolRealArray( 0, 0.4 )
+}
+
+[node name="Main" type="Node2D"]
+script = SubResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+position = Vector2( 400, 300 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area2D" type="Area2D" parent="Sprite"]
+scale = Vector2( 1.64397, 1.64397 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Area2D"]
+visible = false
+shape = SubResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/down = SubResource( 2 )
+anims/up = SubResource( 3 )
+
+[connection signal="input_event" from="Sprite/Area2D" to="." method="_on_Area2D_input_event"]
+[connection signal="mouse_entered" from="Sprite/Area2D" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite/Area2D" to="." method="_on_Area2D_mouse_exited"]
