@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://InteractiveUI-Shader.shader" type="Shader" id=1]
+[ext_resource path="res://YoutubeButtonShader.shader" type="Shader" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
 
@@ -23,18 +23,17 @@ func _on_Area2D_mouse_exited():
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 "
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 1 )
 shader_param/color = Color( 0.372549, 0.372549, 0.372549, 0 )
 shader_param/width = 0.0
 shader_param/margin = 12.0
 shader_param/pattern = 0
 
-[sub_resource type="CircleShape2D" id=6]
+[sub_resource type="CircleShape2D" id=3]
 radius = 120.043
 
-[sub_resource type="Animation" id=2]
-resource_name = "down"
+[sub_resource type="Animation" id=4]
 length = 0.05
 step = 0.01
 tracks/0/type = "value"
@@ -62,8 +61,7 @@ tracks/1/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "up"
+[sub_resource type="Animation" id=5]
 length = 0.4
 step = 0.01
 tracks/0/type = "value"
@@ -90,10 +88,10 @@ tracks/1/keys = {
 }
 
 [node name="Main" type="Node2D"]
-script = SubResource( 5 )
+script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
+material = SubResource( 2 )
 position = Vector2( 400, 300 )
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 2 )
@@ -109,14 +107,14 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/Area2D"]
 visible = false
-shape = SubResource( 6 )
+shape = SubResource( 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/down = SubResource( 2 )
-anims/up = SubResource( 3 )
+anims/down = SubResource( 4 )
+anims/up = SubResource( 5 )
 
 [connection signal="input_event" from="Sprite/Area2D" to="." method="_on_Area2D_input_event"]
 [connection signal="mouse_entered" from="Sprite/Area2D" to="." method="_on_Area2D_mouse_entered"]
